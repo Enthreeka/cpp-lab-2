@@ -39,51 +39,48 @@ void RClass::DrawRFunc(const std::function<float(const sf::Vector2f &)> &rfunc, 
 	{
 		for (int y = 0; y < image.getSize().y - 1; ++y)
 		{
-			sf::Vector2f spacePoint1 = {subSpace.left + static_cast<float>(x) * spaceStep.x,
-										subSpace.top + static_cast<float>(y) * spaceStep.y};
+			sf::Vector2f spacePointFirst = {subSpace.left + static_cast<float>(x) * spaceStep.x,
+											subSpace.top + static_cast<float>(y) * spaceStep.y};
 
-			const float z1 = rfunc(spacePoint1);
+			const float z1 = rfunc(spacePointFirst);
 
-			sf::Vector2f spacePoint2 = {subSpace.left + static_cast<float>(x + 1) * spaceStep.x,
-										subSpace.top + static_cast<float>(y) * spaceStep.y};
+			sf::Vector2f spacePointSecond = {subSpace.left + static_cast<float>(x + 1) * spaceStep.x,
+											 subSpace.top + static_cast<float>(y) * spaceStep.y};
 
-			const float z2 = rfunc(spacePoint2);
+			const float z2 = rfunc(spacePointSecond);
 
-			sf::Vector2f spacePoint3 = {subSpace.left + static_cast<float>(x) * spaceStep.x,
-										subSpace.top + static_cast<float>(y + 1) * spaceStep.y};
+			sf::Vector2f spacePointThird = {subSpace.left + static_cast<float>(x) * spaceStep.x,
+											subSpace.top + static_cast<float>(y + 1) * spaceStep.y};
 
-			const float z3 = rfunc(spacePoint3);
+			const float z3 = rfunc(spacePointThird);
 
 			const float A = createMatrix({
-				{spacePoint1.y, z1, 1},
-				{spacePoint2.y, z2, 1},
-				{spacePoint3.y, z3, 1},
+				{spacePointFirst.y, z1, 1},
+				{spacePointSecond.y, z2, 1},
+				{spacePointThird.y, z3, 1},
 			});
 
 			const float B = createMatrix({
-				{spacePoint1.x, z1, 1},
-				{spacePoint2.x, z2, 1},
-				{spacePoint3.x, z3, 1},
+				{spacePointFirst.x, z1, 1},
+				{spacePointSecond.x, z2, 1},
+				{spacePointThird.x, z3, 1},
 			});
 
 			const float C = createMatrix({
-				{spacePoint1.x, spacePoint1.y, 1},
-				{spacePoint2.x, spacePoint2.y, 1},
-				{spacePoint3.x, spacePoint3.y, 1},
+				{spacePointFirst.x, spacePointFirst.y, 1},
+				{spacePointSecond.x, spacePointSecond.y, 1},
+				{spacePointThird.x, spacePointThird.y, 1},
 			});
 
 			const float D = createMatrix({
-				{spacePoint1.x, spacePoint1.y, z1},
-				{spacePoint2.x, spacePoint2.y, z2},
-				{spacePoint3.x, spacePoint3.y, z3},
+				{spacePointFirst.x, spacePointFirst.y, z1},
+				{spacePointSecond.x, spacePointSecond.y, z2},
+				{spacePointThird.x, spacePointThird.y, z3},
 			});
 
-			const float lenPv = std::sqrt(A * A + B * B + C * C + D * D);
+			const float rat = std::sqrt(A * A + B * B + C * C + D * D);
 
-			float nx = A / lenPv;
-			float ny = B / lenPv;
-			float nz = C / lenPv;
-			float nw = D / lenPv;
+			float nx = A / rat, ny = B / rat, nz = C / rat, nw = D / rat;
 
 			float selectedNormal = nx;
 

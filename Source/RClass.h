@@ -1,6 +1,3 @@
-#ifndef RCLASS_H
-#define RCLASS_H
-
 #include <SFML/Graphics.hpp>
 #include <functional>
 
@@ -19,5 +16,3 @@ private:
 	sf::Image image;
 	int index;
 };
-
-#endif // RFUNCSPRITE_H
